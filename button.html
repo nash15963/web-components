@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <my-button></my-button>
+    <script type="module" src=""> 
+        // 這是範例，請整包複製
+        class myButton extends HTMLElement{
+            constructor(){
+                super() ;
+                this.attachShadow({mode: 'open'}) ;
+            }
+        }
+
+        // component definition
+        window.customElements.define('my-button', myButton) ; // 這一個my-button是html tag name ，對應到上面的my-button
+
+    </script>
+
+
+</body>
+</html>

@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <new-button id="target" text="我是按鈕"></new-button>
+    <button onclick="change()">change</button>
+
+    <script>
+        function change() {
+            console.log('change');
+            const target = document.getElementById('target');
+            target.setAttribute('text', '我是改變後的按鈕');
+        }
+    </script>
+    
+    <script type="module"> 
+        class NewButton extends HTMLElement {
+            static get observedAttributes() {
+                return ['text'];
+            }
+
+            constructor() {
+                super();
+                this.attachShadow({ mode: 'open' });
+                this.styling();
+                this.render();
+            }
+
+            attributeChangedCallback(name, oldValue, newValue) {
+                if (name === 'text') {
+                    this.updateButtonText(newValue);
+                }
+            }
+
+            updateButtonText(text) {
+                if (!this.button) {
+                    // 如果按鈕還沒創建，先創建它
+                    this.render();
+                }
+                this.button.textContent = text;
+            }
+
+            render() {
+                if (!this.button) {
+                    this.button = document.createElement('button');
+                    this.button.className = "custom-button-style";
+                    this.shadowRoot.appendChild(this.button);
+                }
+                this.button.textContent = this.getAttribute('text') || 'Default Text';
+            }
+
+            styling() {
+                const styleSheet = document.createElement('style');
+                styleSheet.textContent = `
+                    .custom-button-style {
+                        color: white;
+                        background-color: #007bff;
+                        border: none;
+                        padding: 20px 30px;
+                        border-radius: 5px;
+                        cursor: pointer;
+                    }
+                `;
+                this.shadowRoot.appendChild(styleSheet);
+            }
+        }
+
+        window.customElements.define('new-button', NewButton);
+
+        
+    </script>
+</body>
+</html>
