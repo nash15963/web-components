@@ -6,7 +6,18 @@
     <title>Document</title>
 </head>
 <body>
-    <h1>Web Components</h1>
-    
+    <new-button id="target" text="我是按鈕"></new-button>
+    <button onclick="change()">change</button>
+
+    <script>
+        function change() {
+            console.log('change');
+            const target = document.getElementById('target');
+            target.setAttribute('text', '我是改變後的按鈕');
+        }
+    </script>
+
+    <!-- 引入 NewButton.mjs -->
+    <script type="module" src="./components//newButton.mjs"></script>
 </body>
 </html>
