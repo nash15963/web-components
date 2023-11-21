@@ -1,23 +1,58 @@
+<!-- @format -->
+
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Document</title>
-</head>
-<body>
+  </head>
+  <body>
     <new-button id="target" text="我是按鈕"></new-button>
     <button onclick="change()">change</button>
 
-    <script>
-        function change() {
-            console.log('change');
-            const target = document.getElementById('target');
-            target.setAttribute('text', '我是改變後的按鈕');
-        }
+    <my-nav title="主題" data=""></my-nav>
+    <my-nav title="ID" data=""></my-nav>
+
+    <script type="module">
+      import { fetchApi } from "./server/index.js";
+
+      function change() {
+        console.log("change");
+        const target = document.getElementById("target");
+        target.setAttribute("text", "我是改變後的按鈕");
+      }
+
+      const url = "https://jsonplaceholder.typicode.com/todos/1";
+
+      fetchApi(url)
+        .then((data) => {
+          console.log(data);
+          /*
+            {completed : false,
+            id : 1,
+            title : "delectus aut autem",
+            userId : 1}
+        })*/
+          // 處理獲取到的數據
+          // 假設我們有兩個 <my-nav> 元素，一個用於顯示 title，另一個用於顯示 userId
+
+          // 首先，獲取這些元素
+          const titleNav = document.querySelector('my-nav[title="主題"]');
+          const userIdNav = document.querySelector('my-nav[title="ID"]');
+
+          // 接著，更新它們的 data 屬性
+          if (titleNav) titleNav.setAttribute("data", data.title);
+          if (userIdNav) userIdNav.setAttribute("data", data.userId.toString());
+        })
+        .catch((error) => {
+          console.error("Error in fetching data:", error); // 處理可能發生的錯誤
+        });
     </script>
 
+    <!-- 引入 MyNav 模組 -->
+    <script type="module" src="./components/MyNav.mjs"></script>
     <!-- 引入 NewButton.mjs -->
-    <script type="module" src="./components//newButton.mjs"></script>
-</body>
+    <script type="module" src="./components/newButton.mjs"></script>
+  </body>
 </html>
