@@ -12,14 +12,34 @@
     .buttonStyle {
       background-color: red;
     }
+    .container {
+      background-color: #d2caca;
+      display: flex;
+      justify-content: space-around;
+      align-items: center;
+      width: 500px;
+      height: 200px;
+    }
   </style>
 
   <body>
     <new-button class="buttonStyle" id="target" text="我是按鈕"></new-button>
     <button onclick="change()">change</button>
 
-    <my-nav title="主題" data=""></my-nav>
-    <my-nav title="ID" data=""></my-nav>
+    <!-- 第一組容器 -->
+    <div class="container" id="containerType1">
+      <my-nav title="title" data=""></my-nav>
+      <my-nav title="ID" data=""></my-nav>
+    </div>
+
+    <!-- 第二組容器 -->
+    <div class="container" id="containerType2">
+      <my-nav title="name" data=""></my-nav>
+      <my-nav title="age" data=""></my-nav>
+      <my-nav title="gender" data=""></my-nav>
+    </div>
+
+    <!-- 如果fetchApi的回傳值為1的話則渲染第一個component，如果為2的話則渲染第二個，並填入相對應資料，請問要如何修改這段程式碼 -->
 
     <script type="module">
       import { fetchApi } from "./server/index.js";
@@ -35,30 +55,63 @@
       fetchApi(url)
         .then((data) => {
           console.log(data);
-          /*
-            {completed : false,
-            id : 1,
-            title : "delectus aut autem",
-            userId : 1}
-        })*/
-          // 處理獲取到的數據
-          // 假設我們有兩個 <my-nav> 元素，一個用於顯示 title，另一個用於顯示 userId
 
-          // 首先，獲取這些元素
-          const titleNav = document.querySelector('my-nav[title="主題"]');
-          const userIdNav = document.querySelector('my-nav[title="ID"]');
+          const data1 = {
+            isSuccess: true,
+            message: "",
+            type: 1,
+            data: {
+              title: "主題",
+              userId: 1,
+            },
+          };
 
-          // 接著，更新它們的 data 屬性
-          if (titleNav) titleNav.setAttribute("data", data.title);
-          if (userIdNav) userIdNav.setAttribute("data", data.userId.toString());
+          const data2 = {
+            isSuccess: true,
+            message: "",
+            type: 2,
+            data: {
+              name: "tyson",
+              age: 18,
+              gender: "b0y",
+            },
+          };
+
+          let res = data1; // mocking 3 types of response
+
+          const containerType1 = document.getElementById("containerType1");
+          const containerType2 = document.getElementById("containerType2");
+
+          if (res.type === 1) {
+            containerType1.style.display = "block";
+            containerType2.style.display = "none";
+
+            // 假设 data 有 title 和 userId 属性
+            const titleNav = document.querySelector('my-nav[title="title"]');
+            const userIdNav = document.querySelector('my-nav[title="ID"]');
+            if (titleNav) titleNav.setAttribute("data", res.data.title);
+            if (userIdNav)
+              userIdNav.setAttribute("data", res.data.userId.toString());
+          } else if (res.type === 2) {
+            containerType1.style.display = "none";
+            containerType2.style.display = "block";
+
+            // 假设 data 有 name, age, 和 gender 属性
+            const nameNav = document.querySelector('my-nav[title="name"]');
+            const ageNav = document.querySelector('my-nav[title="age"]');
+            const genderNav = document.querySelector('my-nav[title="gender"]');
+            if (nameNav) nameNav.setAttribute("data", res.data.name);
+            if (ageNav) ageNav.setAttribute("data", res.data.age.toString());
+            if (genderNav) genderNav.setAttribute("data", res.data.gender);
+          }
         })
         .catch((error) => {
-          console.error("Error in fetching data:", error); // 處理可能發生的錯誤
+          console.error("Error in fetching res:", error); // 處理可能發生的錯誤
         });
     </script>
 
     <!-- 引入 MyNav 模組 -->
-    <script type="module" src="./components/MyNav.mjs"></script>
+    <script type="module" src="./components/MyNav/MyNav.mjs"></script>
     <!-- 引入 NewButton.mjs -->
     <script type="module" src="./components/newButton.mjs"></script>
   </body>

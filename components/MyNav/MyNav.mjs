@@ -20,20 +20,7 @@ export class MyNav extends HTMLElement {
         const data = this.getAttribute('data') || '';
 
         this.shadowRoot.innerHTML = `
-            <style>
-                .nav_container {
-                    display: flex;
-                    flex-direction: column;
-                }
-                .nav_title {
-                    font-size: 20px;
-                    font-weight: bold;
-                }
-                .nav_name {
-                    font-size: 16px;
-                    font-weight: normal;
-                }
-            </style>
+            <link rel="stylesheet" href="./components/MyNav/style.css"> 
             <div class="nav_container">
                 <div class="nav_title">${title}</div>
                 <p class="nav_name">${data}</p>
@@ -43,6 +30,3 @@ export class MyNav extends HTMLElement {
 }
 
 window.customElements.define('my-nav', MyNav);
-
-
-
