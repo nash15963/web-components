@@ -1,4 +1,16 @@
 export class NewButton extends HTMLElement {
+    static style = `
+        .custom-button-style {
+            background-color: #4CAF50; /* Green */
+            border: none;
+            color: white;
+            padding: 15px 32px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 16px;
+        }
+    `;
     static get observedAttributes() {
         return ['text'];
     }
@@ -33,18 +45,9 @@ export class NewButton extends HTMLElement {
     }
 
     styling() {
-        const styleSheet = document.createElement('style');
-        styleSheet.textContent = `
-            .custom-button-style {
-                color: white;
-                background-color: #007bff;
-                border: none;
-                padding: 20px 30px;
-                border-radius: 5px;
-                cursor: pointer;
-            }
-        `;
-        this.shadowRoot.appendChild(styleSheet);
+        this.styleSheet = document.createElement('style');
+        this.styleSheet.textContent = this.constructor.style;
+        this.shadowRoot.appendChild(this.styleSheet);
     }
 }
 
